@@ -9,7 +9,7 @@ on:
       - synchronize
 
 jobs:
-  build:
+  static:
     runs-on: ubuntu-latest
 
     steps:
