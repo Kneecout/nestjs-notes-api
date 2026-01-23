@@ -29,7 +29,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: ESlint
-        run: pnpm lint:ci
+        run: pnpm lint
 
       - name: Prettier
         run: pnpm format:check
