@@ -1,12 +1,18 @@
 services:
   nest-app:
-    build: .
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
     container_name: nest-app
     environment:
     - DATABASE_USER=${DATABASE_USER} 
     - DATABASE_PASSWORD=${DATABASE_PASSWORD}
     - DATABASE=${DATABASE}
     - DATABASE_HOST=${DATABASE_HOST}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   postgres:
     container_name: postgres 
     image: postgres:16
@@ -16,6 +22,11 @@ services:
     - POSTGRES_DB=${POSTGRES_DB}
     volumes:
       - db-data:/var/lib/postgres/data 
+    healthcheck: 
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+      interval: 20s
+      timeout: 15s
+      retries: 10
 
 volumes:
   db-data:
